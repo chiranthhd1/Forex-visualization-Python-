@@ -1,8 +1,8 @@
 
 import csv
 # Inputs are taken in reverse order bacause data in .csv file is from present date to past date.
-end = raw_input("Enter starting date: ")
-start = raw_input("Enter ending date: ")
+end = raw_input("From date you wanted the info: ")
+start = raw_input("Till which date you wanted the info: ")
 o = open('usdtoinr.csv', 'r')
 myData = csv.reader(o)
 index = 0 

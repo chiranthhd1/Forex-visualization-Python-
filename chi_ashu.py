@@ -20,9 +20,9 @@ for i in a:
 d2 = int(d2)
 d = int(d)
 if d2>d:
-	aa = np.array(a[d:d2])
+	aa = np.array(a[d:d2]) #can be used without changing to array
 else:
-	aa = np.array(a[d2:d])
+	aa = np.array(a[d2:d]) #can be used without changing to array
 
 print "values in between the dates are \n", aa,
 ii = 0

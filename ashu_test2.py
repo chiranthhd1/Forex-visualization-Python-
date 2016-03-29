@@ -20,7 +20,7 @@ for row in myData:
 		index += 1
 o.close()
 # Code under quotes is traditional Python code dealing with lists.
-"""
+
 file = open('usdtoinr.csv', 'r')
 myData1 = csv.reader(file)
 index = start1
@@ -44,4 +44,4 @@ import pandas as pd
 file = pd.read_csv('usdtoinr.csv', index_col = 0)
 
 print (file.iloc[start1-1:end1, :])
-
+"""

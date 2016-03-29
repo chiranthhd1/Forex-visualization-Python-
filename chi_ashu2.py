@@ -59,10 +59,17 @@ else:
 ii = 0
 ii = int(ii)
 r=[]
+d=[]
 for i in aa:
         r.append( float(aa[ii][2]))
+	d.append(aa[ii][0])
         ii+=1
 print "\n"
-#print "values of opening rate are \n", r # just for our info
-#print "\n"
-print "highest opening value is : " , max(r)
+print "values of opening rate are \n", r # just for our info
+print "\n"
+print "Corresponding dates: \n", d
+print "\n"
+index = 0
+index = r.index(max(r))
+print ("highest opening value is %s on %s between the range from %s to %s" %(max(r),d[index],in1,in2))
+

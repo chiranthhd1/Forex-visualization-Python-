@@ -38,30 +38,13 @@ for row in myData:
 	else:
 		index += 1
 o.close()
-# Code under quotes is traditional Python code dealing with lists.
-"""
-file = open('usdtoinr.csv', 'r')
-myData1 = csv.reader(file)
-index = start1
-for row in myData1:
-	if row[0] == start:
-		print row[:]
-		index += 1
-	elif (index > start1 and index <= end1):
-		print row[:]
-		index += 1
-	elif row[0] == end:
-		print row[:]
-		exit()
-	else:
-		pass
 
-"""
+
 #The below code works using pandas library dealing with data frames.
 
 
 value = file.iloc[start1-1:end1, 0]
-#print(value)
+
 maxPrice = 0
 maxprice = file.iloc[start1-1:end1, 1].values.max()
 index = file.iloc[start1-1:end1, 1].values.argmax()

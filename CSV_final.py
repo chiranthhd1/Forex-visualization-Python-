@@ -43,17 +43,17 @@ def getPrice(price):
 
 year = raw_input("Enter the year for which you need to see the consolidated report wrt USD in range (1990-2016):  ")
 priceUsd_Eur = read_file("usdeuro.csv")
-print "Price_EUR:"
-print priceUsd_Eur
+#print "Price_EUR:"
+#print priceUsd_Eur
 priceUsd_gbp = read_file("usdgbp.csv")
-print "Price_GBP:"
-print priceUsd_gbp
+#print "Price_GBP:"
+#print priceUsd_gbp
 priceUsd_cny = read_file("usdtocny.csv")
-print "Price_CNY:"
-print priceUsd_cny
+#print "Price_CNY:"
+#print priceUsd_cny
 priceUsd_inr = read_file("usdtoinr.csv")
-print "Price_INR:"
-print priceUsd_inr
+#print "Price_INR:"
+#print priceUsd_inr
 
 
 

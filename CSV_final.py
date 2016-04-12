@@ -9,6 +9,8 @@ priceUsd_Eur =[]
 priceUsd_gbp =[]
 priceUsd_cny =[]
 priceUsd_inr =[]
+corrDates = []
+
 def read_file(filename):
     a = list ( csv.reader ( open (filename)))
     d =[]
@@ -31,6 +33,7 @@ def read_file(filename):
             c +=1
         #print i
     temp = getPrice(d)
+    getDates(d)
     return temp
 
 def getPrice(price):
@@ -41,19 +44,19 @@ def getPrice(price):
         c += 1
     return priceValue
 
+
+
+
+
 year = raw_input("Enter the year for which you need to see the consolidated report wrt USD in range (1990-2016):  ")
 priceUsd_Eur = read_file("usdeuro.csv")
-#print "Price_EUR:"
-#print priceUsd_Eur
-priceUsd_gbp = read_file("usdgbp.csv")
-#print "Price_GBP:"
-#print priceUsd_gbp
-priceUsd_cny = read_file("usdtocny.csv")
-#print "Price_CNY:"
-#print priceUsd_cny
-priceUsd_inr = read_file("usdtoinr.csv")
-#print "Price_INR:"
-#print priceUsd_inr
+print priceUsd_Eur
+
+
+
+# priceUsd_gbp = read_file("usdgbp.csv")
+# priceUsd_cny = read_file("usdtocny.csv")
+# priceUsd_inr = read_file("usdtoinr.csv")
 
 
 

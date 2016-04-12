@@ -1,14 +1,8 @@
 import pandas as pd
 import csv
-o = 0
-myData = 0
-file = 0
-index = 0 
-start1 = 0
-end1 = 0
-
 # Taking inputs.
-def currency_select():
+def ashu():
+
 	print "1, USD to INR \n",
 	print "2, USD to GBP \n",
 	print "3, USD to CAN \n",
@@ -22,16 +16,19 @@ def currency_select():
 			#a = list ( csv.reader ( open (file_dict[keys])))
 			o = open(file_dict[keys], 'r')
 			file = pd.read_csv(file_dict[keys])
-			myData = csv.reader(o)
 		else:
 			pass
 
-def date_select(myData):
 	print("-----------Enter Dates-----------")
-	end = raw_input(" Please enter start date in format m/dd/yyyy (eg:3/11/2016) : ")
-	start = raw_input(" Please enter end date in format m/dd/yyyy (eg:3/11/2016) : ")
+	end = raw_input("please enter start date in format m/dd/yyyy (eg:3/11/2016) : ")
+	start = raw_input("please enter start date in format m/dd/yyyy (eg:3/11/2016) : ")
 	print("\nOUTPUT:")
-	print(myData)
+
+	myData = csv.reader(o)
+	index = 0 
+	start1 = 0
+	end1 = 0
+
 	for row in myData:
 		if row[0] == start:
 			start1 = index
@@ -41,65 +38,32 @@ def date_select(myData):
 			pass
 		else:
 			index += 1
+	o.close()
 
-
-#The below code works using pandas library dealing with data frames.
-def output(file):
-
-	if end1 > start1:
-
-		value = file.iloc[start1-1:end1, :]
-	else:
-		value = file.iloc[end1+1:start1+1, :]
-
-	maxprice = value.iloc[:, 1].values.max()
-	index = value.iloc[:, 1].values.argmax()
-	print("\nThe maximum Price is %s on %s" %(maxprice,value.iloc[index]))
-
-	x=value.iloc[0,1]
-	y=value.iloc[-1,1]
-	print("\nThe percentage change from %s to %s is %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],(x-y)/x * 100))
-
-	maxprice = value.iloc[:, 2].values.max()
-	index = value.iloc[:, 2].values.argmax()
-	print("\nThe maximum Price is %s on %s" %(maxprice,value.iloc[index]))
-
-	maxprice = value.iloc[:, 3].values.max()
-	index = value.iloc[:, 3].values.argmax()
-	print("\nThe maximum Price is %s on %s" %(maxprice,value.iloc[index]))
-
-	maxprice = value.iloc[:, 4].values.max()
-	index = value.iloc[:, 4].values.argmax()
-	print("\nThe maximum Price is %s on %s" %(maxprice,value.iloc[index]))
-
-currency_select()
-date_select(myData)
-output(file)
-o.close()
-'''
 #The below code works using pandas library dealing with data frames.
 
 
-value = file.iloc[start1-1:end1, :]
+	value = file.iloc[start1-1:end1, 0]
+	#print(value)
+	maxPrice = 0
+	maxprice = file.iloc[start1-1:end1, 1].values.max()
+	index = file.iloc[start1-1:end1, 1].values.argmax()
+	print("\nThe maximum Price is %s on %s" %(maxprice,value.iloc[index]))
+	x=file.iloc[start1-1, 1]
+	y=file.iloc[end1-1, 1]
+	print("\nThe percentage change from %s to %s is %.2f percent " %(file.iloc[end1-1,0], file.iloc[start1-1,0],(x-y)/x * 100))
 
-maxPrice = 0
-maxprice = file.iloc[start1-1:end1, 1].values.max()
-index = file.iloc[start1-1:end1, 1].values.argmax()
-print("\nThe maximum Price is %s on %s" %(maxprice,value.iloc[index]))
-x=file.iloc[start1-1, 1]
-y=file.iloc[end1-1, 1]
-print("\nThe percentage change from %s to %s is %.2f percent " %(file.iloc[end1-1,0], file.iloc[start1-1,0],(x-y)/x * 100))
+	maxprice = file.iloc[start1-1:end1, 2].values.max()
+	index = file.iloc[start1-1:end1, 2].values.argmax()
+	print("\nThe maximum Open Price is %s on %s" %(maxprice,value.iloc[index]))
 
-maxprice = file.iloc[start1-1:end1, 2].values.max()
-index = file.iloc[start1-1:end1, 2].values.argmax()
-print("\nThe maximum Open Price is %s on %s" %(maxprice,value.iloc[index]))
+	maxprice = file.iloc[start1-1:end1, 3].values.max()
+	index = file.iloc[start1-1:end1, 3].values.argmax()
+	print("\nThe maximum High Price is %s on %s" %(maxprice,value.iloc[index]))
 
-maxprice = file.iloc[start1-1:end1, 3].values.max()
-index = file.iloc[start1-1:end1, 3].values.argmax()
-print("\nThe maximum High Price is %s on %s" %(maxprice,value.iloc[index]))
+	maxprice = file.iloc[start1-1:end1, 4].values.max()
+	index = file.iloc[start1-1:end1, 4].values.argmax()
+	print("\nThe maximum Low Price is %s on %s" %(maxprice,value.iloc[index]))
 
-maxprice = file.iloc[start1-1:end1, 4].values.max()
-index = file.iloc[start1-1:end1, 4].values.argmax()
-print("\nThe maximum Low Price is %s on %s" %(maxprice,value.iloc[index]))
 
-'''
+ashu()

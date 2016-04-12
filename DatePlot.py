@@ -19,6 +19,7 @@ def read_file(filename):
     #print a
     c = 1
     for i in a:
+
         if (c < len(a)) :
             try:
                 j = a[c][0]
@@ -58,15 +59,63 @@ year = raw_input("Enter the year for which you need to see the consolidated repo
 priceUsd_Eur = read_file("usdeuro.csv")
 print priceUsd_Eur
 datesUsd_Eur = corrDates
-print datesUsd_Eur
+print len(datesUsd_Eur)
+# priceUsd_cny = read_file("usdtocny.csv")
+# print priceUsd_cny
+# datesUsd_cny = corrDates
+# print len(datesUsd_cny)
+priceUSD_CAN = read_file("USDCAN.csv")
+datesUSD_can = corrDates
+print priceUSD_CAN
+print len(datesUSD_can)
+# priceUSD_INR = read_file("usdtoinr.csv")
+# datesUSD_INR = corrDates
+# print priceUSD_INR
 
-x = [dt.datetime.strptime(d,'%m/%d/%Y').date() for d in datesUsd_Eur]
-y = range(len(x))
+eur_x = [dt.datetime.strptime(d,'%m/%d/%Y').date() for d in datesUsd_Eur]
+#cny_x = [dt.datetime.strptime(d,'%m/%d/%Y').date() for d in datesUsd_cny]
+can_x = [dt.datetime.strptime(d,'%m/%d/%Y').date() for d in datesUSD_can]
+#inr_x = [dt.datetime.strptime(d,'%m/%d/%Y').date() for d in datesUSD_INR]
+
 plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y'))
 plt.gca().xaxis.set_major_locator(mdates.MonthLocator())
-plt.plot(x,priceUsd_Eur, color= 'r')
-plt.gcf().autofmt_xdate()
-plt.show()
+
+# #ax1 = plt.subplot(211)
+# plt.plot(eur_x, priceUsd_Eur, color = 'r')
+# #plt.setp(ax1.get_xticklabels(), fontsize=6)
+# plt.gcf().autofmt_xdate()
+# plt.show()
+# #ax2 = plt.subplot(212, sharex=ax1)
+# plt.plot(can_x, priceUSD_CAN, color = 'b')
+# # # make these tick labels invisible
+# # plt.setp(ax2.get_xticklabels())
+# plt.gcf().autofmt_xdate()
+# plt.show()
+
+
+# ax3 = plt.subplot(313, sharex=ax1)
+# plt.plot(cny_x, priceUsd_cny, color = 'y')
+# # # make these tick labels invisible
+# plt.setp(ax3.get_xticklabels())
+# plt.gcf().autofmt_xdate()
+
+# ax4 = plt.subplot(314, sharex=ax1)
+# plt.plot(inr_x, priceUSD_INR, color = 'g')
+# # # make these tick labels invisible
+# plt.setp(ax4.get_xticklabels())
+# plt.gcf().autofmt_xdate()
+
+
+#plt.show()
+# ax2 = plt.subplot(212, sharex=ax1)
+# plt.plot(can_x, priceUSD_CAN)
+# # make these tick labels invisible
+# plt.setp(ax2.get_xticklabels(),)
+
+#plt.plot(eur_x,priceUsd_Eur, color= 'r')
+#plt.plot(can_x,priceUSD_CAN, color= 'b')
+# plt.gcf().autofmt_xdate()
+# plt.show()
 # priceUsd_inr = read_file("usdtoinr.csv")
 
 

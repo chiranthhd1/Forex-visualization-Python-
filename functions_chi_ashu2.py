@@ -32,7 +32,6 @@ def date_select(myData):
 	in2 = raw_input(" Please enter end date in format m/dd/yyyy (eg:3/11/2016) : ")
 	print("\nOUTPUT:")
 	temp=0
-	temp=int(temp)
 	for i in myData:
         	if myData[temp][0] == in1:
                 	start= temp
@@ -64,15 +63,15 @@ def output(start,end,file1):
 
 	maxprice = value.iloc[:, 2].values.max()
 	index = value.iloc[:, 2].values.argmax()
-	print("\nThe maximum Price is %s on %s" %(maxprice,value.iloc[index]))
+	print("\nThe maximum opening Price is %s on %s" %(maxprice,value.iloc[index]))
 
 	maxprice = value.iloc[:, 3].values.max()
 	index = value.iloc[:, 3].values.argmax()
-	print("\nThe maximum Price is %s on %s" %(maxprice,value.iloc[index]))
+	print("\nThe maximum High Price is %s on %s" %(maxprice,value.iloc[index]))
 
 	maxprice = value.iloc[:, 4].values.max()
 	index = value.iloc[:, 4].values.argmax()
-	print("\nThe maximum Price is %s on %s" %(maxprice,value.iloc[index]))
+	print("\nThe maximum Low Price is %s on %s" %(maxprice,value.iloc[index]))
 
 file1,myData = currency_select()
 start1,end1 = date_select(myData)

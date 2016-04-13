@@ -5,13 +5,13 @@ import matplotlib.pyplot as plt
 # Taking inputs.
 def currency_select():
 
-	print "1, USD to INR \n",
-	print "2, USD to GBP \n",
-	print "3, USD to CAN \n",
-	print "4, USD to EUR\n",
-	print "5, USD to AUD \n",
+	print "\t1, USD to INR \n",
+	print "\t2, USD to GBP \n",
+	print "\t3, USD to CAN \n",
+	print "\t4, USD to EUR\n",
+	print "\t5, USD to AUD \n",
 	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv"}	
-	inputfile = raw_input("please enter the currency from above: ")	
+	inputfile = raw_input("\tPlease enter the currency from above: ")	
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 	for keys in file_dict.keys():
 		if inputfile == keys:
@@ -24,10 +24,12 @@ def currency_select():
 
 
 def date_select(myData):
-	print("-----------Enter Dates-----------")
-	in1 = raw_input(" Please enter start(latest) date in format m/dd/yyyy (eg:3/11/2016) : ")
-	in2 = raw_input(" Please enter end(old) date in format m/dd/yyyy (eg:3/11/2010) : ")
-	print("\nOUTPUT:")
+	print ("\n")	
+	print("\t---------------------------------Enter Dates----------------------------------")
+	in1 = raw_input(" \tPlease enter start(latest) date in format m/dd/yyyy (eg:3/11/2016) : ")
+	in2 = raw_input(" \tPlease enter end(old) date in format m/dd/yyyy (eg:3/11/2010)      : ")
+	print("\n")
+	print ("\t----------------------------------Output--------------------------------------")
 	temp=0
 	for i in myData:
         	if myData[temp][0] == in1:
@@ -57,7 +59,7 @@ def output(start,end,file1,plot_data,in1,in2):
 
 	x=value.iloc[0,1]
 	y=value.iloc[-1,1]
-	print("\n\tThe percentage change from \t %s  to \t %s  is   %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],(x-y)/x * 100))
+	print("\n\tThe percentage change from \t%s  to \t %s  is   %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],(x-y)/x * 100))
 
 	maxprice = value.iloc[:, 2].values.max()
 	index = value.iloc[:, 2].values.argmax()
@@ -78,6 +80,9 @@ def output(start,end,file1,plot_data,in1,in2):
 	ts = plot_data['Price']
 	ts1 = ts[in1:in2]	
 	plt.plot(ts1)
+	plt.xlabel('Time Elapsed')
+	plt.ylabel('USD to INR rate')
+	plt.title('Time Series graph ')
 	plt.show()
 
 

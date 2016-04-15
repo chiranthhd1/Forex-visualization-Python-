@@ -88,23 +88,11 @@ def output(start,end,file1,plot_data,in1,in2):
 
 # Taking inputs.
 def annual_select():
-	'''
-	print "\t1, USD to INR \n",
-	print "\t2, USD to GBP \n",
-	print "\t3, USD to CAN \n",
-	print "\t4, USD to EUR\n",
-	print "\t5, USD to AUD \n",
-	'''	
-	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}	
-#	inputfile = raw_input("\tPlease enter the currency from above: ")
+		
+	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}
 
 	input_year = raw_input("\tEnter year to be analysed ")	
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
-	#for keys in file_dict.keys():
-	#	if inputfile == keys:
-			#file1 = pd.read_csv(file_dict[keys])
-			#myData = list ( csv.reader ( open (file_dict[keys])))
-
 
 	plot_data_usdinr = pd.read_csv(file_dict["1"],index_col='Date',date_parser=dateparse)
 	plot_data_usdgbp = pd.read_csv(file_dict["2"],index_col='Date',date_parser=dateparse)
@@ -112,10 +100,7 @@ def annual_select():
 	plot_data_usdeur = pd.read_csv(file_dict["4"],index_col='Date',date_parser=dateparse)
 	plot_data_usdaud = pd.read_csv(file_dict["5"],index_col='Date',date_parser=dateparse)
 	plot_data_usdcny = pd.read_csv(file_dict["6"],index_col='Date',date_parser=dateparse)
-
-
-#		else:
-#			pass	
+	
 	return (plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
 
 
@@ -153,10 +138,12 @@ def plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeu
 	axes[5].plot(ts1_cny, color = 'm')
 	axes[5].set_ylabel('USD to CNY')
 
-#	plt.title('Time Series graph ')
 	plt.show()
 
-user_in = raw_input("\t Do you want to see consolidated data on annual basis then press 1 or you want to select a particular time range then press 2: ")
+print ("\t What do you want to see")
+print ("\t 1. Consolidated analysis on annual basis ")
+print ("\t 2. Analysis of a particular time range ")
+user_in = raw_input(" \t Please enter 1 or 2: ")
 
 if user_in == "2":
 	file1,myData,plot_data = currency_select()

@@ -103,6 +103,21 @@ def annual_select():
 	
 	return (plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
 
+def change_select():
+		
+	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}
+
+	input_year = raw_input("\tEnter year to be analysed ")	
+	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
+
+	plot_data_usdinr = pd.read_csv(file_dict["1"],index_col='Date',date_parser=dateparse)
+	plot_data_usdgbp = pd.read_csv(file_dict["2"],index_col='Date',date_parser=dateparse)
+	plot_data_usdcan = pd.read_csv(file_dict["3"],index_col='Date',date_parser=dateparse)
+	plot_data_usdeur = pd.read_csv(file_dict["4"],index_col='Date',date_parser=dateparse)
+	plot_data_usdaud = pd.read_csv(file_dict["5"],index_col='Date',date_parser=dateparse)
+	plot_data_usdcny = pd.read_csv(file_dict["6"],index_col='Date',date_parser=dateparse)
+	
+	return (plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
 
 def plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year):
 	ts_inr = plot_data_usdinr['Price']
@@ -140,17 +155,78 @@ def plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeu
 
 	plt.show()
 
+def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year):
+	ts_inr = plot_data_usdinr['Change %']
+	ts_gbp = plot_data_usdgbp['Change %']
+	ts_can = plot_data_usdcan['Change %']
+	ts_eur = plot_data_usdeur['Change %']
+	ts_aud = plot_data_usdaud['Change %']
+	ts_cny = plot_data_usdcny['Change %']
+	
+	ts1_inr = ts_inr[input_year].tolist()
+	ts1_gbp = ts_gbp[input_year].tolist()	
+	ts1_can = ts_can[input_year].tolist()	
+	ts1_eur = ts_eur[input_year].tolist()	
+	ts1_aud = ts_aud[input_year].tolist()	
+	ts1_cny = ts_cny[input_year].tolist()	
+        ts1_inr_chng = []
+        ts1_gbp_chng = []
+        ts1_can_chng = []
+        ts1_eur_chng = []
+        ts1_aud_chng = []
+        ts1_cny_chng = []
+        for row in ts1_inr:
+                ts1_inr_chng.append(float((row.split("%", 1))[0]))
+        #print ts1_inr_chng
+        for row in ts1_gbp:
+                ts1_gbp_chng.append(float((row.split("%", 1))[0]))
+        for row in ts1_can:
+                ts1_can_chng.append(float((row.split("%", 1))[0]))
+        for row in ts1_eur:
+                ts1_eur_chng.append(float((row.split("%", 1))[0]))
+        for row in ts1_aud:
+                ts1_aud_chng.append(float((row.split("%", 1))[0]))
+        for row in ts1_cny:
+                ts1_cny_chng.append(float((row.split("%", 1))[0]))
+        chng=[]
+        chng.append(sum(ts1_inr_chng))
+        chng.append(sum(ts1_gbp_chng))
+        chng.append(sum(ts1_can_chng))
+        chng.append(sum(ts1_eur_chng))
+        chng.append(sum(ts1_aud_chng))
+        chng.append(sum(ts1_cny_chng))
+
+        print chng
+        print min(chng), max(chng)
+        #plt.ylim([min(chng), max(chng)])
+        x = [1,2,3,4,5,6]
+        xtik = ['       INR', '     GBP', '     CAN', '     EUR', '     AUD', '     CNY']
+        plt.bar(x,chng,0.5,color='b')
+        plt.axhline(0, color='k')
+        plt.xticks(x,xtik)
+#        plt.set_xticklabels(xtik)
+       # plt.xticks([w for w in xtik],[w for w in xtik])
+        plt.show()
+
 print ("\t What do you want to see")
 print ("\t 1. Consolidated analysis on annual basis ")
 print ("\t 2. Analysis of a particular time range ")
-user_in = raw_input(" \t Please enter 1 or 2: ")
+print ("\t 3. Change Percentage for selected year")
+user_in = raw_input(" \t Please enter 1 ,2 or 3: ")
 
 if user_in == "2":
 	file1,myData,plot_data = currency_select()
 	start1,end1,in1,in2 = date_select(myData)
 	output(start1,end1,file1,plot_data,in1,in2)
+elif user_in == "1":
+        plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
+        plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
 else:
-	plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
-	plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
+        plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
+        plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
+
+
+
+       
 
 

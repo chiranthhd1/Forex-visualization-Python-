@@ -1,16 +1,18 @@
 import pandas as pd
 import csv
 import matplotlib.pyplot as plt
+import os
 
 # Taking inputs.
 def currency_select():
-
+	os.system('clear')
 	print "\t1, USD to INR \n",
 	print "\t2, USD to GBP \n",
 	print "\t3, USD to CAN \n",
 	print "\t4, USD to EUR\n",
 	print "\t5, USD to AUD \n",
-	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv"}	
+	print "\t6, USD to CNY \n",
+	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv", "6":"usdtocny.csv"}
 	inputfile = raw_input("\tPlease enter the currency from above: ")	
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 	for keys in file_dict.keys():
@@ -24,6 +26,7 @@ def currency_select():
 
 
 def date_select(myData):
+	os.system('clear')	
 	print ("\n")	
 	print("\t---------------------------------Enter Dates----------------------------------")
 	in1 = raw_input(" \tPlease enter start(latest) date in format m/dd/yyyy (eg:3/11/2016) : ")
@@ -55,6 +58,7 @@ def output(start,end,file1,plot_data,in1,in2):
 	maxprice = value.iloc[:, 1].values.max()
 	index = value.iloc[:, 1].values.argmax()
 	de = value.iloc[index]
+	os.system('clear')	
 	print("\n\tThe maximum Price is \t\t %s    on \t %s" %(maxprice,de['Date']))
 
 	x=value.iloc[0,1]
@@ -88,23 +92,7 @@ def output(start,end,file1,plot_data,in1,in2):
 
 # Taking inputs.
 def annual_select():
-		
-	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}
-
-	input_year = raw_input("\tEnter year to be analysed ")	
-	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
-
-	plot_data_usdinr = pd.read_csv(file_dict["1"],index_col='Date',date_parser=dateparse)
-	plot_data_usdgbp = pd.read_csv(file_dict["2"],index_col='Date',date_parser=dateparse)
-	plot_data_usdcan = pd.read_csv(file_dict["3"],index_col='Date',date_parser=dateparse)
-	plot_data_usdeur = pd.read_csv(file_dict["4"],index_col='Date',date_parser=dateparse)
-	plot_data_usdaud = pd.read_csv(file_dict["5"],index_col='Date',date_parser=dateparse)
-	plot_data_usdcny = pd.read_csv(file_dict["6"],index_col='Date',date_parser=dateparse)
-	
-	return (plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
-
-def change_select():
-		
+	os.system('clear')	
 	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}
 
 	input_year = raw_input("\tEnter year to be analysed ")	
@@ -196,21 +184,17 @@ def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_
         chng.append(sum(ts1_aud_chng))
         chng.append(sum(ts1_cny_chng))
 
-        print chng
-        print min(chng), max(chng)
-        #plt.ylim([min(chng), max(chng)])
         x = [1,2,3,4,5,6]
-        xtik = ['       INR', '     GBP', '     CAN', '     EUR', '     AUD', '     CNY']
+        xtik = ['INR', 'GBP', 'CAN', 'EUR', 'AUD', 'CNY']
         plt.bar(x,chng,0.5,color='b')
         plt.axhline(0, color='k')
         plt.xticks(x,xtik)
-#        plt.set_xticklabels(xtik)
-       # plt.xticks([w for w in xtik],[w for w in xtik])
         plt.show()
 
+os.system('clear')
 print ("\t What do you want to see")
 print ("\t 1. Consolidated analysis on annual basis ")
-print ("\t 2. Analysis of a particular time range ")
+print ("\t 2. Analysis of a particular currency in a specified time range ")
 print ("\t 3. Change Percentage for selected year")
 user_in = raw_input(" \t Please enter 1 ,2 or 3: ")
 

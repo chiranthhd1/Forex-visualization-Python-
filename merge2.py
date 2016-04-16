@@ -7,6 +7,7 @@ Currencies_dict = {'usdtoinr.csv':"USD to Indian Ruppee", "usdgbp.csv":"USD to G
 def currency_select():
 	os.system('clear')
 	print ("\n\n")
+	print("\t---------------------------------Choose Currency----------------------------------")
 	print "\t1, USD to INR \n",
 	print "\t2, USD to GBP \n",
 	print "\t3, USD to CAN \n",
@@ -14,7 +15,7 @@ def currency_select():
 	print "\t5, USD to AUD \n",
 	print "\t6, USD to CNY \n",
 	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv", "6":"usdtocny.csv"}
-	inputfile = raw_input("\tPlease enter the currency from above: ")	
+	inputfile = raw_input("\tPlease select any currency from above: ")	
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 	for keys in file_dict.keys():
 		if inputfile == keys:
@@ -36,8 +37,7 @@ def date_select(myData,f):
 	print("\t---------------------------------Enter Dates----------------------------------")
 	in1 = raw_input(" \tPlease enter start(latest) date in format m/dd/yyyy (eg:3/11/2016) : ")
 	in2 = raw_input(" \tPlease enter end(old) date in format m/dd/yyyy (eg:3/11/2010)      : ")
-	print("\n")
-	print ("\t----------------------------------Output--------------------------------------")
+	print ("\t-----------------------------------------------------------------------------")
 	temp=0
 	for i in myData:
         	if myData[temp][0] == in1:
@@ -67,6 +67,7 @@ def output(start,end,file1,plot_data,in1,in2,f):
 	print ("\n\n")
 	print "\tSelected option is "+f
 	print ("\n")	
+	print ("\t----------------------------------Output--------------------------------------")
 	print("\n\tThe maximum Price is \t\t %s    on \t %s" %(maxprice,de['Date']))
 
 	x=value.iloc[0,1]

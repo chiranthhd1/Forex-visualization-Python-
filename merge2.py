@@ -2,10 +2,11 @@ import pandas as pd
 import csv
 import matplotlib.pyplot as plt
 import os
-
+Currencies_dict = {'usdtoinr.csv':"USD to Indian Ruppee", "usdgbp.csv":"USD to Great Britan Pound",'USDCAN.csv':"USD to Canadian Dollar", "usdeuro.csv" : "USD to Euro","usd_to_aud.csv":"USD to Australian Dollar", "usdtocny.csv":"USD to Chinese Yen"}
 # Taking inputs.
 def currency_select():
 	os.system('clear')
+	print ("\n\n")
 	print "\t1, USD to INR \n",
 	print "\t2, USD to GBP \n",
 	print "\t3, USD to CAN \n",
@@ -22,11 +23,15 @@ def currency_select():
 			plot_data = pd.read_csv(file_dict[keys],index_col='Date',date_parser=dateparse)
 		else:
 			pass	
-	return (file1,myData,plot_data)
+	s = file_dict[inputfile]
+	f = Currencies_dict[s]
+	return (file1,myData,plot_data,f)
 
 
-def date_select(myData):
+def date_select(myData,f):
 	os.system('clear')	
+	print ("\n\n")
+	print " \tSelected option is "+f	
 	print ("\n")	
 	print("\t---------------------------------Enter Dates----------------------------------")
 	in1 = raw_input(" \tPlease enter start(latest) date in format m/dd/yyyy (eg:3/11/2016) : ")
@@ -48,7 +53,7 @@ def date_select(myData):
 	return (start,end,in1,in2)
 
 #The below code works using pandas library dealing with data frames.
-def output(start,end,file1,plot_data,in1,in2):
+def output(start,end,file1,plot_data,in1,in2,f):
 	if end > start:
 
 		value = file1.iloc[start-1:end, :]
@@ -59,6 +64,9 @@ def output(start,end,file1,plot_data,in1,in2):
 	index = value.iloc[:, 1].values.argmax()
 	de = value.iloc[index]
 	os.system('clear')	
+	print ("\n\n")
+	print "\tSelected option is "+f
+	print ("\n")	
 	print("\n\tThe maximum Price is \t\t %s    on \t %s" %(maxprice,de['Date']))
 
 	x=value.iloc[0,1]
@@ -85,14 +93,16 @@ def output(start,end,file1,plot_data,in1,in2):
 	ts1 = ts[in1:in2]	
 	plt.plot(ts1)
 	plt.xlabel('Time Elapsed')
-	plt.ylabel('USD to INR rate')
+	plt.ylabel(f)
 	plt.title('Time Series graph ')
 	plt.show()
 
 
 # Taking inputs.
 def annual_select():
-	os.system('clear')	
+	os.system('clear')
+	print ("\n\n")
+		
 	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}
 
 	input_year = raw_input("\tEnter year to be analysed ")	
@@ -192,6 +202,8 @@ def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_
         plt.show()
 
 os.system('clear')
+print ("\n")
+print ("\n")
 print ("\t What do you want to see")
 print ("\t 1. Consolidated analysis on annual basis ")
 print ("\t 2. Analysis of a particular currency in a specified time range ")
@@ -199,9 +211,9 @@ print ("\t 3. Change Percentage for selected year")
 user_in = raw_input(" \t Please enter 1 ,2 or 3: ")
 
 if user_in == "2":
-	file1,myData,plot_data = currency_select()
-	start1,end1,in1,in2 = date_select(myData)
-	output(start1,end1,file1,plot_data,in1,in2)
+	file1,myData,plot_data,f = currency_select()
+	start1,end1,in1,in2 = date_select(myData,f)
+	output(start1,end1,file1,plot_data,in1,in2,f)
 elif user_in == "1":
         plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
         plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)

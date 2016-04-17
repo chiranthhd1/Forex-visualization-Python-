@@ -14,8 +14,16 @@ def currency_select():
 	print "\t4, USD to EUR\n",
 	print "\t5, USD to AUD \n",
 	print "\t6, USD to CNY \n",
-	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv", "6":"usdtocny.csv"}
-	inputfile = raw_input("\tPlease select any currency from above: ")	
+	file_dict = {1:'usdtoinr.csv', 2:"usdgbp.csv",3:'USDCAN.csv', 4:"usdeuro.csv",5:"usd_to_aud.csv", 6:"usdtocny.csv"}
+	while True:
+        	try:
+			inputfile = int(raw_input("\tPlease select any currency from above: "))
+                	break
+        	except  ValueError:
+                	print "\n\tError!! Please Enter an interger from 1 to 6 , Try again"
+		
+	
+
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 	for keys in file_dict.keys():
 		if inputfile == keys:
@@ -213,13 +221,18 @@ print ("\t What do you want to see")
 print ("\t 1. Consolidated analysis on annual basis ")
 print ("\t 2. Analysis of a particular currency in a specified time range ")
 print ("\t 3. Change Percentage for selected year")
-user_in = raw_input(" \t Please enter 1 ,2 or 3: ")
+while True:
+        try:
+                user_in = int(raw_input(" \t Please enter 1 ,2 or 3: "))
+                break
+        except  ValueError:
+                print "\n\t Error!! Please Enter an interger from 1 to 3 , Try again"
 
-if user_in == "2":
+if user_in == 2:
 	file1,myData,plot_data,chosen_curr,end_date,start_date = currency_select()
 	start1,end1,in1,in2 = date_select(myData,chosen_curr,end_date,start_date)
 	output(start1,end1,file1,plot_data,in1,in2,chosen_curr)
-elif user_in == "1":
+elif user_in == 1:
         plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
         plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
 else:

@@ -105,7 +105,7 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 	ts1 = ts[in1:in2]	
 	plt.plot(ts1)
 	plt.xlabel('Time Elapsed')
-	plt.ylabel(f)
+	plt.ylabel(chosen_curr)
 	plt.title('Time Series graph ')
 	plt.show()
 

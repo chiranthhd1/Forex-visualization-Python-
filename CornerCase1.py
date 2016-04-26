@@ -57,31 +57,23 @@ def date_select(myData,chosen_curr,end_date,start_date):
 	temp=0
         start=0
         end=0
-	while True:
-		try:
-			for i in myData:
-				if myData[temp][0] == in1:
-					start= temp
-				elif myData[temp][0] == in2:
-					end = temp
-				else:
-					pass
-				temp+=1
-				if start == 0 and end == 0: 
-					raise ValueError
-					#print colored ("\n Market was closed on these dates. Please try with different dates\n", 'red' , attrs = ['bold'])
-					#exit(1)
-				elif start == 0: 
-					#print colored ("\n On this START date market was closed! Please try again ! \n \n", 'red' , attrs = ['bold'])
-					#break
-					raise ValueError
-				
-				elif end == 0:
-					#print colored ("\n On this END date market was closed! Please try again ! \n \n", 'red' , attrs = ['bold'])
-					#break
-					raise ValueError
-		except  ValueError:
-               		print colored ("\n \n Itseems Data is notavailable for these dates. Please try with different dates\n", 'red' , attrs = ['bold'])
+	for i in myData:
+		if myData[temp][0] == in1:
+			start= temp
+		elif myData[temp][0] == in2:
+			end = temp
+		else:
+			pass
+		temp+=1
+	if start == 0 and end == 0: 
+		print colored ("\n Market was closed on these dates. Please try with different dates\n", 'red' , attrs = ['bold'])
+		exit(1)
+	elif start == 0: 
+		print colored ("\n On this START date market was closed! Please try again ! \n \n", 'red' , attrs = ['bold'])
+		exit(1)	
+	elif end == 0:
+		print colored ("\n On this END date market was closed! Please try again ! \n \n", 'red' , attrs = ['bold'])
+		exit(1)
 					
 	start = int(start)
 	end = int(end)

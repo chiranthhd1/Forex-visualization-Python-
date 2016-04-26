@@ -2,28 +2,30 @@ import pandas as pd
 import csv
 import matplotlib.pyplot as plt
 import os
-Currencies_dict = {'usdtoinr.csv':"USD to Indian Ruppee", "usdgbp.csv":"USD to Great Britan Pound",'USDCAN.csv':"USD to Canadian Dollar", "usdeuro.csv" : "USD to Euro","usd_to_aud.csv":"USD to Australian Dollar", "usdtocny.csv":"USD to Chinese Yen"}
+from  termcolor import colored
+Currencies_dict = {'usdtoinr.csv':"USD to Indian Rupee", "usdgbp.csv":"USD to Great Britan Pound",'USDCAN.csv':"USD to Canadian Dollar", "usdeuro.csv" : "USD to Euro","usd_to_aud.csv":"USD to Australian Dollar", "usdtocny.csv":"USD to Chinese Yen"}
 # Taking inputs.
 def currency_select():
 	os.system('clear')
 	print ("\n\n")
-	print("\t---------------------------------Choose Currency----------------------------------")
-	print "\t1. USD to INR \n",
-	print "\t2. USD to GBP \n",
-	print "\t3. USD to CAN \n",
-	print "\t4. USD to EUR\n",
-	print "\t5. USD to AUD \n",
-	print "\t6. USD to CNY \n",
+	print colored ("\t---------------------------------Choose Currency----------------------------------")
+	print colored ("\t1. USD to INR \n", 'blue' , attrs= ['bold'])
+	print colored ("\t2. USD to GBP \n", 'blue' , attrs= ['bold'])
+	print colored ("\t3. USD to CAN \n", 'blue' , attrs= ['bold'])
+	print colored ("\t4. USD to EUR\n", 'blue' , attrs= ['bold'])
+	print colored ("\t5. USD to AUD \n", 'blue' , attrs= ['bold'])
+	print colored ("\t6. USD to CNY \n", 'blue' , attrs= ['bold'])
 	file_dict = {1:'usdtoinr.csv', 2:"usdgbp.csv",3:'USDCAN.csv', 4:"usdeuro.csv",5:"usd_to_aud.csv", 6:"usdtocny.csv"}
 	while True:
         	try:
-			inputfile = int(raw_input("\tPlease select any currency from above: "))
+			print colored ("\tPlease select any currency from above: ",'green' , attrs= ['bold'])
+			inputfile = int(raw_input())
                 	if inputfile > 0 and inputfile < 7:
                                 break
                         else: 
                                 raise ValueError
         	except  ValueError:
-                	print "\n\tError!! Please Enter an interger from 1 to 6 , Try again"
+                	print colored ("\n\tError!! Please Enter an interger from 1 to 6 , Try again", 'red', attrs= ['bold','dark'])
 		
 	
 
@@ -43,10 +45,10 @@ def currency_select():
 
 
 def date_select(myData,chosen_curr,end_date,start_date):
-	#os.system('clear')	
+	os.system('clear')	
 	print ("\n\n")
-	print " \tSelected option is "+chosen_curr
-	print ("\tData Ranges from '%s' to '%s'") %(end_date,start_date)	
+	print colored (" \tSelected option is : %s", 'yellow',attrs=['bold']) %(chosen_curr)
+	print colored ("\tData Ranges from '%s' to '%s'",'yellow',attrs=['bold']) %(end_date,start_date)	
 	print ("\n")	
 	print("\t---------------------------------Enter Dates----------------------------------")
 	in1 = raw_input(" \tPlease enter start(latest) date in format m/dd/yyyy (eg:3/11/2016) : ")
@@ -55,23 +57,32 @@ def date_select(myData,chosen_curr,end_date,start_date):
 	temp=0
         start=0
         end=0
-	for i in myData:
-        	if myData[temp][0] == in1:
-                	start= temp
-        	elif myData[temp][0] == in2:
-     	        	end = temp
-        	else:
-                	pass
-        	temp+=1
-        if start == 0 and end == 0: 
-                print "\n Market was closed on these dates. Please try with different dates\n"
-                exit(1)
-        elif start == 0: 
-                print "\n On this START date market was closed! Please try again ! \n \n"
-                exit(1)
-        elif end == 0:
-                print "\n On this END date market was closed! Please try again ! \n \n"
-                exit(1) 
+	while True:
+		try:
+			for i in myData:
+				if myData[temp][0] == in1:
+					start= temp
+				elif myData[temp][0] == in2:
+					end = temp
+				else:
+					pass
+				temp+=1
+				if start == 0 and end == 0: 
+					raise ValueError
+					#print colored ("\n Market was closed on these dates. Please try with different dates\n", 'red' , attrs = ['bold'])
+					#exit(1)
+				elif start == 0: 
+					#print colored ("\n On this START date market was closed! Please try again ! \n \n", 'red' , attrs = ['bold'])
+					#break
+					raise ValueError
+				
+				elif end == 0:
+					#print colored ("\n On this END date market was closed! Please try again ! \n \n", 'red' , attrs = ['bold'])
+					#break
+					raise ValueError
+		except  ValueError:
+               		print colored ("\n \n Itseems Data is notavailable for these dates. Please try with different dates\n", 'red' , attrs = ['bold'])
+					
 	start = int(start)
 	end = int(end)
 	return (start,end,in1,in2)
@@ -141,7 +152,7 @@ def annual_select():
                                 raise ValueError
 
         	except  ValueError:
-                	print "\n\tError!! Please Enter an interger from 2001 to 2016 , Try again"
+                	print colored ("\n\tError!! Please Enter an interger from 2001 to 2016 , Try again",'red', attrs=['bold'])
 		
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 
@@ -241,11 +252,11 @@ def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_
 os.system('clear')
 print ("\n")
 print ("\n")
-print("\t---------------------------------Choose Process----------------------------------")
-print ("\t What do you want to see")
-print ("\t 1. Consolidated analysis on annual basis ")
-print ("\t 2. Analysis of a particular currency in a specified time range ")
-print ("\t 3. Change Percentage for selected year")
+print colored("\t---------------------------------Choose Process----------------------------------")
+print colored ("\t What do you want to see", 'magenta')
+print colored ("\t 1. Consolidated analysis on annual basis ", 'magenta')
+print colored ("\t 2. Analysis of a particular currency in a specified time range ",'magenta')
+print colored ("\t 3. Change Percentage for selected year", 'magenta')
 while True:
         try:
                 user_in = int(raw_input(" \t Please enter 1 ,2 or 3: "))
@@ -254,7 +265,7 @@ while True:
                 else:
                         raise ValueError
         except  ValueError:
-                print "\n\t Error!! Please Enter an interger from 1 to 3 , Try again"
+                print colored ("\n\t Error!! Please Enter an interger from 1 to 3 , Try again", 'red', attrs= ['bold','dark'])
 
 if user_in == 2:
 	file1,myData,plot_data,chosen_curr,end_date,start_date = currency_select()

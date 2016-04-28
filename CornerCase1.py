@@ -1,5 +1,6 @@
 import pandas as pd
 import csv
+import pylab
 #import matplotlib
 #matplotlib.use('Agg')
 import matplotlib.pyplot as plt
@@ -143,14 +144,15 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 	plt.xlabel('Time Elapsed')
 	plt.ylabel(chosen_curr)
 	plt.title('Time Series graph ')
+	plt.savefig("figs/op2.png")
 	plt.show()
-
+	plt.close()
 
 # Taking inputs.
-def annual_select():
+def annual_select(op):
 	os.system('clear')
 	print ("\n\n")
-	print colored ("\tSelected option is %r",'yellow') %("Consolidated analysis on annual basis")
+	print colored ("\tSelected option is %r",'yellow') %(op)
 	print colored ("\t----------------------------------Output--------------------------------------",'blue')
 	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}
 
@@ -211,8 +213,11 @@ def plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeu
 
 	axes[5].plot(ts1_cny, color = 'm')
 	axes[5].set_ylabel('USD to CNY')
-
+	plt.savefig("figs/op1.png")
 	plt.show()
+	plt.close()
+
+
 
 def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year):
 	ts_inr = plot_data_usdinr['Change %']
@@ -260,7 +265,11 @@ def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_
         plt.bar(x,chng,0.5,color='b')
         plt.axhline(0, color='k')
         plt.xticks(x,xtik)
-        plt.show()
+	plt.savefig("figs/op3.png")
+	plt.show()
+	plt.close()
+
+
 
 while True:
 	os.system('clear')
@@ -272,10 +281,11 @@ while True:
 	print colored ("\t 2. Analysis of a particular currency in a specified time range ",'magenta')
 	print colored ("\t 3. Change Percentage for selected year", 'magenta')
 	print colored ("\t 4. Quit", 'magenta')
-	
+	op1 = "Consolidated analysis on annual basis" 
+	op3 = "Change Percentage for selected year"
 	while True:
         	try:
-			user_in = int(raw_input(" \t Please enter 1 ,2 or 3: "))
+			user_in = int(raw_input(" \t Please enter 1, 2, 3 or 4: "))
 			if user_in > 0 and user_in < 5:
 				break
 			else:
@@ -287,10 +297,10 @@ while True:
 		start1,end1,in1,in2 = date_select(myData,chosen_curr,end_date,start_date)
 		output(start1,end1,file1,plot_data,in1,in2,chosen_curr)
 	elif user_in == 1:
-		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
+		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select(op1)
 		plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
 	elif user_in == 3:
-		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
+		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select(op3)
 		plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
 	else:
 		exit(1)

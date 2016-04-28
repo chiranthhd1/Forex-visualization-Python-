@@ -18,12 +18,14 @@ def currency_select():
 	print colored ("\t4. USD to EUR\n", 'blue' , attrs= ['bold'])
 	print colored ("\t5. USD to AUD \n", 'blue' , attrs= ['bold'])
 	print colored ("\t6. USD to CNY \n", 'blue' , attrs= ['bold'])
+#	print colored ("\t7. Back to Main Menu \n", 'blue' , attrs= ['bold'])
+	
 	file_dict = {1:'usdtoinr.csv', 2:"usdgbp.csv",3:'USDCAN.csv', 4:"usdeuro.csv",5:"usd_to_aud.csv", 6:"usdtocny.csv"}
 	while True:
         	try:
 			print colored ("\tPlease select any currency from above: ",'green' , attrs= ['bold'])
 			inputfile = int(raw_input())
-                	if inputfile > 0 and inputfile < 7:
+                	if inputfile > 0 and inputfile < 8:
                                 break
                         else: 
                                 raise ValueError
@@ -31,6 +33,8 @@ def currency_select():
                 	print colored ("\n\tError!! Please Enter an interger from 1 to 6 , Try again", 'red', attrs= ['bold','dark'])
 		
 	
+	#if inputfile == 7:
+	#	back = 7
 
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 	for keys in file_dict.keys():
@@ -43,8 +47,8 @@ def currency_select():
 	s = file_dict[inputfile]
 	chosen_curr = Currencies_dict[s]
 	end_date = file1["Date"].iloc[-1]
-        start_date = file1["Date"].iloc[0]
-        return (file1,myData,plot_data,chosen_curr,end_date,start_date)
+	start_date = file1["Date"].iloc[0]
+	return (file1,myData,plot_data,chosen_curr,end_date,start_date)
 
 
 def date_select(myData,chosen_curr,end_date,start_date):
@@ -95,30 +99,43 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 	de = value.iloc[index]
 	os.system('clear')	
 	print ("\n\n")
-	print "\tSelected option is "+chosen_curr
+	print colored (" \tSelected option is : %s", 'yellow',attrs=['bold']) %(chosen_curr)
+	print colored ("\tData Ranges from '%s' to '%s'",'yellow',attrs=['bold']) %(end_date,start_date)	
 	print ("\n")	
-	print ("\t----------------------------------Output--------------------------------------")
+	print colored ("\t----------------------------------Output--------------------------------------",'blue')
 	print("\n\tThe maximum Price is \t\t %s    on \t %s" %(maxprice,de['Date']))
 
 	x=value.iloc[0,1]
 	y=value.iloc[-1,1]
-	print("\n\tThe percentage change from \t%s  to \t %s  is   %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],(x-y)/x * 100))
+	z = ((x-y)/x * 100)
+	
+	if z > 0:
+		print ("\n\tThe percentage change from \t%s  to \t %s  is   %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],z))
+	else:
+		print colored ("\n\tThe percentage change from \t%s  to \t %s  is   %.2f percent ",'red') %(value.iloc[0,0], value.iloc[-1,0],z)
+		
+	minprice = value.iloc[:, 1].values.min()
+	index = value.iloc[:, 1].values.argmin()
+	de = value.iloc[index]
+	print("\n\tThe minimum Price was         \t %s    on \t %s" %(minprice,de['Date']))
+
 
 	maxprice = value.iloc[:, 2].values.max()
 	index = value.iloc[:, 2].values.argmax()
 	de = value.iloc[index]
-	print("\n\tThe maximum opening Price is \t %s    on \t %s" %(maxprice,de['Date']))
+	print("\n\tThe maximum opening Price was \t %s    on \t %s" %(maxprice,de['Date']))
 
 	maxprice = value.iloc[:, 3].values.max()
 	index = value.iloc[:, 3].values.argmax()
 	de = value.iloc[index]
-	print("\n\tThe maximum High Price is \t %s    on \t %s" %(maxprice,de['Date']))
+	print("\n\tThe maximum High Price was \t %s    on \t %s" %(maxprice,de['Date']))
 
 	maxprice = value.iloc[:, 4].values.max()
 	index = value.iloc[:, 4].values.argmax()
 	de = value.iloc[index]
-	print("\n\tThe maximum Low Price is \t %s     on \t %s" %(maxprice,de['Date']))
-	
+	print("\n\tThe maximum Low Price was \t %s     on \t %s" %(maxprice,de['Date']))
+
+	wait_cofirm = raw_input("\n\tPlease press enter to view the graph")	
 	#print plot_data
 	ts = plot_data['Price']
 	ts1 = ts[in1:in2]	
@@ -133,21 +150,22 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 def annual_select():
 	os.system('clear')
 	print ("\n\n")
-		
+	print colored ("\tSelected option is %r",'yellow') %("Consolidated analysis on annual basis")
+	print colored ("\t----------------------------------Output--------------------------------------",'blue')
 	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}
 
         #input_year = raw_input("\tEnter year to be analysed ")
         while True:
         	try:
-                        input_year = raw_input("\tEnter year between (2001-2016):  ")
+                        input_year = raw_input("\tEnter year between (2002-2016):  ")
                         int_year = int(input_year)
-                        if int_year > 2000 and int_year < 2017:
+                        if int_year > 2001 and int_year < 2017:
                                 break
                         else:
                                 raise ValueError
 
         	except  ValueError:
-                	print colored ("\n\tError!! Please Enter an interger from 2001 to 2016 , Try again",'red', attrs=['bold'])
+                	print colored ("\n\tError!! Please Enter an interger from 2002 to 2016 , Try again",'red', attrs=['bold'])
 		
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 
@@ -244,35 +262,38 @@ def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_
         plt.xticks(x,xtik)
         plt.show()
 
-os.system('clear')
-print ("\n")
-print ("\n")
-print colored("\t---------------------------------Choose Process----------------------------------")
-print colored ("\t What do you want to see", 'magenta')
-print colored ("\t 1. Consolidated analysis on annual basis ", 'magenta')
-print colored ("\t 2. Analysis of a particular currency in a specified time range ",'magenta')
-print colored ("\t 3. Change Percentage for selected year", 'magenta')
 while True:
-        try:
-                user_in = int(raw_input(" \t Please enter 1 ,2 or 3: "))
-                if user_in > 0 and user_in < 4:
-                        break
-                else:
-                        raise ValueError
-        except  ValueError:
-                print colored ("\n\t Error!! Please Enter an interger from 1 to 3 , Try again", 'red', attrs= ['bold','dark'])
-
-if user_in == 2:
-	file1,myData,plot_data,chosen_curr,end_date,start_date = currency_select()
-	start1,end1,in1,in2 = date_select(myData,chosen_curr,end_date,start_date)
-	output(start1,end1,file1,plot_data,in1,in2,chosen_curr)
-elif user_in == 1:
-        plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
-        plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
-else:
-        plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
-        plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
-
+	os.system('clear')
+	print ("\n")
+	print ("\n")
+	print colored("\t---------------------------------Choose Process----------------------------------")
+	print colored ("\t What do you want to see", 'magenta')
+	print colored ("\t 1. Consolidated analysis on annual basis ", 'magenta')
+	print colored ("\t 2. Analysis of a particular currency in a specified time range ",'magenta')
+	print colored ("\t 3. Change Percentage for selected year", 'magenta')
+	print colored ("\t 4. Quit", 'magenta')
+	
+	while True:
+        	try:
+			user_in = int(raw_input(" \t Please enter 1 ,2 or 3: "))
+			if user_in > 0 and user_in < 5:
+				break
+			else:
+				raise ValueError
+		except  ValueError:
+			print colored ("\n\t Error!! Please Enter an interger from 1 to 3 , Try again", 'red', attrs= ['bold','dark'])
+	if user_in == 2:
+		file1,myData,plot_data,chosen_curr,end_date,start_date = currency_select()
+		start1,end1,in1,in2 = date_select(myData,chosen_curr,end_date,start_date)
+		output(start1,end1,file1,plot_data,in1,in2,chosen_curr)
+	elif user_in == 1:
+		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
+		plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
+	elif user_in == 3:
+		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select()
+		plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
+	else:
+		exit(1)
 
 
        

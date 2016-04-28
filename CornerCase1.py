@@ -1,8 +1,11 @@
 import pandas as pd
 import csv
+#import matplotlib
+#matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import os
 from  termcolor import colored
+#matplotlib.use('Agg')
 Currencies_dict = {'usdtoinr.csv':"USD to Indian Rupee", "usdgbp.csv":"USD to Great Britan Pound",'USDCAN.csv':"USD to Canadian Dollar", "usdeuro.csv" : "USD to Euro","usd_to_aud.csv":"USD to Australian Dollar", "usdtocny.csv":"USD to Chinese Yen"}
 # Taking inputs.
 def currency_select():

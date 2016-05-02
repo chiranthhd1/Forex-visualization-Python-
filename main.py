@@ -323,7 +323,8 @@ while True:
 	elif user_in == 3:
 		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select(op3)
 		plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
-  
+	elif user_in == 4:
+		exit(1)  
 	else:
 	    APP = flask.Flask(__name__)
 	    @APP.route('/')

@@ -12,19 +12,6 @@ import easygui as eg
 Currencies_dict = {'usdtoinr.csv':"USD to Indian Rupee", "usdgbp.csv":"USD to Great Britan Pound",'USDCAN.csv':"USD to Canadian Dollar", "usdeuro.csv" : "USD to Euro","usd_to_aud.csv":"USD to Australian Dollar", "usdtocny.csv":"USD to Chinese Yen"}
 # Taking inputs.
 def currency_select():
-	'''
-	os.system('clear')
-	print ("\n\n")
-	print colored ("\t---------------------------------Choose Currency----------------------------------")
-	print colored ("\t1. USD to INR \n", 'blue' , attrs= ['bold'])
-	print colored ("\t2. USD to GBP \n", 'blue' , attrs= ['bold'])
-	print colored ("\t3. USD to CAN \n", 'blue' , attrs= ['bold'])
-	print colored ("\t4. USD to EUR\n", 'blue' , attrs= ['bold'])
-	print colored ("\t5. USD to AUD \n", 'blue' , attrs= ['bold'])
-	print colored ("\t6. USD to CNY \n", 'blue' , attrs= ['bold'])
-#	print colored ("\t7. Back to Main Menu \n", 'blue' , attrs= ['bold'])
-	'''
-	#file_dict = {1:'usdtoinr.csv', 2:"usdgbp.csv",3:'USDCAN.csv', 4:"usdeuro.csv",5:"usd_to_aud.csv", 6:"usdtocny.csv"}
 	file_dict = {"USD to INR":'usdtoinr.csv', "USD to GBP":"usdgbp.csv","USD to EUR":'USDCAN.csv', "USD to CAN":"usdeuro.csv","USD to AUD":"usd_to_aud.csv","USD to CNY":"usdtocny.csv"}
 	
 	title = "Please select !!"
@@ -32,9 +19,6 @@ def currency_select():
 	choice = ["USD to INR","USD to GBP","USD to CAN","USD to EUR","USD to AUD","USD to CNY"]
 	inputfile = eg.choicebox(msg,title,choice)
 	inputfile = str(inputfile)		
-	
-	#if inputfile == 7:
-	#	back = 7
 
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 	for keys in file_dict.keys():
@@ -52,51 +36,43 @@ def currency_select():
 
 
 def date_select(myData,chosen_curr,end_date,start_date):
-	'''
-	os.system('clear')	
-	print ("\n\n")
-	print colored (" \tSelected option is : %s", 'yellow',attrs=['bold']) %(chosen_curr)
-	print colored ("\tData Ranges from '%s' to '%s'",'yellow',attrs=['bold']) %(end_date,start_date)	
-	print ("\n")	
-	print("\t---------------------------------Enter Dates----------------------------------")
-	in1 = raw_input(" \tPlease enter start(latest) date in format m/dd/yyyy (eg:3/11/2016) : ")
-	in2 = raw_input(" \tPlease enter end(old) date in format m/dd/yyyy (eg:3/11/2010)      : ")
-	print ("\t-----------------------------------------------------------------------------")
-	'''
 	title = ("Selected option is " +(chosen_curr))
 	msg  = "Data Ranges from" + end_date+" " +  start_date	
-#	print ("\n")	
-#	print("\t---------------------------------Enter Dates----------------------------------")
 	fieldNames = ["Please enter start(latest) date in format m/dd/yyyy (eg:3/11/2016)", "Please enter end(old) date in format m/dd/yyyy (eg:3/11/2010)"]
 	fieldValues = []
 	fieldValues = eg.multenterbox(msg,title,fieldNames)
-	print fieldValues[0]
-	print fieldValues[1]
-	
 	temp=0
         start=0
         end=0
-	for i in myData:
-		if myData[temp][0] == fieldValues[0]:
-			start= temp
-		elif myData[temp][0] == fieldValues[1]:
-			end = temp
-		else:
-			pass
-		temp+=1
-	if start == 0 and end == 0: 
-		eg.msgbox("Market was closed on these dates. Please try with different dates")
-		exit(1)
-	elif start == 0: 
-		eg.msgbox("On this START date market was closed! Please try again !")
-		exit(1)	
-	elif end == 0:
-		eg.msgbox("On this END date market was closed! Please try again !")
-		exit(1)
+	if fieldValues == None:
+		flag = 1
+		return (0,0,0,0,flag)
+	
+	else:
+		flag = 0
+		for i in myData:
+			if myData[temp][0] == fieldValues[0]:
+				start= temp
+			elif myData[temp][0] == fieldValues[1]:
+				end = temp
+			else:
+				pass
+			temp+=1
+		if start == 0 and end == 0: 
+			eg.msgbox("Market was closed on these dates. Please try with different dates")
+			
+		elif start == 0: 
+			eg.msgbox("On this START date market was closed! Please try again !")
+		
+		elif end == 0:
+			eg.msgbox("On this END date market was closed! Please try again !")
+		
 					
-	start = int(start)
-	end = int(end)
-	return (start,end,fieldValues[0],fieldValues[1])
+		start = int(start)
+		end = int(end)
+		return (start,end,fieldValues[0],fieldValues[1],flag)
+	
+		
 
 #The below code works using pandas library dealing with data frames.
 def output(start,end,file1,plot_data,in1,in2,chosen_curr):
@@ -110,79 +86,35 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 	index = value.iloc[:, 1].values.argmax()
 	de = value.iloc[index]
 	os.system('clear')	
-	print ("\n\n")
-	print colored (" \tSelected option is : %s", 'yellow',attrs=['bold']) %(chosen_curr)
-	print colored ("\tData Ranges from '%s' to '%s'",'yellow',attrs=['bold']) %(end_date,start_date)	
-	print ("\n")	
-	print colored ("\t----------------------------------Output--------------------------------------",'blue')
-	print("\n\tThe maximum Price is \t\t %s    on \t %s" %(maxprice,de['Date']))
 
 	x = value.iloc[0,1]
 	y = value.iloc[-1,1]
 	z = ((x-y)/x * 100)
-	'''
-	if z > 0:
-		gui1.write("The percentage change from %s  to  %s  is   %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],z))
-	else:
-		print colored ("\n\tThe percentage change from \t%s  to \t %s  is   %.2f percent ",'red') %(value.iloc[0,0], value.iloc[-1,0],z)
-		
-	minprice = value.iloc[:, 1].values.min()
-	index = value.iloc[:, 1].values.argmin()
-	de = value.iloc[index]
-	print("\n\tThe minimum Price was         \t %s    on \t %s" %(minprice,de['Date']))
-
-
-	maxprice = value.iloc[:, 2].values.max()
-	index = value.iloc[:, 2].values.argmax()
-	de = value.iloc[index]
-	print("\n\tThe maximum opening Price was \t %s    on \t %s" %(maxprice,de['Date']))
-
-	maxprice = value.iloc[:, 3].values.max()
-	index = value.iloc[:, 3].values.argmax()
-	de = value.iloc[index]
-	print("\n\tThe maximum High Price was \t %s    on \t %s" %(maxprice,de['Date']))
-
-	maxprice = value.iloc[:, 4].values.max()
-	index = value.iloc[:, 4].values.argmax()
-	de = value.iloc[index]
-	print("\n\tThe maximum Low Price was \t %s     on \t %s" %(maxprice,de['Date']))
-	'''
-	v1 = str (value.iloc[0,0])
-	v2 = str(value.iloc[-1,0])
-	print v1,v2
 	a = ("The percentage change from %s  to  %s  is %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],z))
-#	a = ("The percentage change from"+  v1 +" to " + v2 + " is " + z
-	print a	
-	#eg.msgbox(a)
+	
 	minprice = value.iloc[:, 1].values.min()
 	index = value.iloc[:, 1].values.argmin()
 	de = value.iloc[index]
-	#b = ("The minimum Price was " + minprice +" on " + de['Date'])
 	b = ("\nThe minimum Price was                 %s  on %s" %(minprice,de['Date']))
 
 	maxprice = value.iloc[:, 2].values.max()
 	index = value.iloc[:, 2].values.argmax()
 	de = value.iloc[index]
-	#c = ("The maximum opening Price was" + maxprice + " on " + de['Date'])
 	c = ("\nThe maximum opening Price was    %s  on %s" %(maxprice,de['Date']))
 	
 	maxprice = value.iloc[:, 3].values.max()
 	index = value.iloc[:, 3].values.argmax()
 	de = value.iloc[index]
-	#d = ("The maximum High Price was" + maxprice +" on " + de['Date'])
 	d = ("\nThe maximum High Price was          %s  on %s" %(maxprice,de['Date']))
 	
 	maxprice = value.iloc[:, 4].values.max()
 	index = value.iloc[:, 4].values.argmax()
 	de = value.iloc[index]
-	#e = ("The maximum Low Price was" + maxprice + " on " + de['Date'])
 	e = ("\nThe maximum Low Price was            %s  on %s" %(maxprice,de['Date']))
 	
 
 	eg.msgbox(a+b+c+d+e)
 
-	eg.msgbox("Graph has been plotted, please access it in the webpage")	
-	#print plot_data
 	ts = plot_data['Price']
 	ts1 = ts[in1:in2]	
 	plt.plot(ts1)
@@ -191,30 +123,27 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 	plt.title('Time Series graph ')
 	mng = plt.get_current_fig_manager()
 	mng.resize(*mng.window.maxsize())
-	plt.savefig("static/op2.png")	
-	#plt.show()
-	#plt.close()
+	eg.msgbox("Graph has been plotted, please access it here 'http://127.0.0.1:5000/'")
+	plt.savefig("static/op1.png")	
 
 # Taking inputs.
 def annual_select(op):
-	os.system('clear')
-	print ("\n\n")
-	#print ("\tSelected option is %r",'yellow') %(op)
-	
-	print colored ("\t----------------------------------Output--------------------------------------",'blue')
 	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}
 
-        #input_year = raw_input("\tEnter year to be analysed ")
         while True:
         	try:	
-			title = ("Select Year")			
-			msg = (("Selected option is %r") %(op))
+			msg = ("Enter Year")			
+			title = (("Selected option is %r") %(op))
                         fieldNames = ["Enter year between (2002-2016):"]
 			fieldValues = []
 			fieldValues = eg.multenterbox(msg,title,fieldNames)
-			                        
-			int_year = int(fieldValues[0])
-                        if int_year > 2001 and int_year < 2017:
+			if fieldValues == None:
+				int_year = fieldValues
+	                else:
+				int_year = int(fieldValues[0])
+                        if int_year == None:
+				break
+			elif int_year > 2001 and int_year < 2017:
                                 break
                         else:
                                 raise ValueError
@@ -222,18 +151,25 @@ def annual_select(op):
         	except  ValueError:
                 	a = ("\n\tError!! Please Enter an interger from 2002 to 2016 , Try again")
 			eg.msgbox(a)
-	input_year = fieldValues[0]
-	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
+	if fieldValues == None:
+		input_year = fieldValues
+	else:
+		input_year = fieldValues[0]
+	if input_year == None:
+		flag =1
+		return (0,0,0,0,0,0,0,flag)
 
-	plot_data_usdinr = pd.read_csv(file_dict["1"],index_col='Date',date_parser=dateparse)
-	plot_data_usdgbp = pd.read_csv(file_dict["2"],index_col='Date',date_parser=dateparse)
-	plot_data_usdcan = pd.read_csv(file_dict["3"],index_col='Date',date_parser=dateparse)
-	plot_data_usdeur = pd.read_csv(file_dict["4"],index_col='Date',date_parser=dateparse)
-	plot_data_usdaud = pd.read_csv(file_dict["5"],index_col='Date',date_parser=dateparse)
-	plot_data_usdcny = pd.read_csv(file_dict["6"],index_col='Date',date_parser=dateparse)
-	
-	eg.msgbox("Graph has been plotted, please access it in the webpage")
-	return (plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
+	else:
+		flag =0
+		dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
+
+		plot_data_usdinr = pd.read_csv(file_dict["1"],index_col='Date',date_parser=dateparse)
+		plot_data_usdgbp = pd.read_csv(file_dict["2"],index_col='Date',date_parser=dateparse)
+		plot_data_usdcan = pd.read_csv(file_dict["3"],index_col='Date',date_parser=dateparse)
+		plot_data_usdeur = pd.read_csv(file_dict["4"],index_col='Date',date_parser=dateparse)
+		plot_data_usdaud = pd.read_csv(file_dict["5"],index_col='Date',date_parser=dateparse)
+		plot_data_usdcny = pd.read_csv(file_dict["6"],index_col='Date',date_parser=dateparse)
+		return (plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year,flag)
 
 def plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year):
 	ts_inr = plot_data_usdinr['Price']
@@ -270,10 +206,9 @@ def plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeu
 	axes[5].set_ylabel('USD to CNY')
 	mng = plt.get_current_fig_manager()
 	mng.resize(*mng.window.maxsize())
-	plt.savefig("static/op1.png")
-	#plt.show()
-	#plt.close()
-
+	plt.xlabel('Time Elapsed')
+	plt.savefig("static/op3.png")
+	eg.msgbox("Graph has been plotted, please access it here 'http://127.0.0.1:5000/'")
 
 
 def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year):
@@ -324,10 +259,14 @@ def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_
         plt.xticks(x,xtik)
 	mng = plt.get_current_fig_manager()
 	mng.resize(*mng.window.maxsize())
-	plt.savefig("static/op3.png")
-	eg.msgbox("Graph has been plotted, please access it in the webpage")
-	#plt.show()
-	#plt.close()
+	plt.xlabel('Currencies')
+	plt.ylabel("Percentage change")
+	title = 'Time Series graph for '+input_year 
+	print title
+	plt.title(title)
+	#plt.title('Time Series graph')
+	plt.savefig("static/op2.png")
+	eg.msgbox("Graph has been plotted, please access it here 'http://127.0.0.1:5000/'")
 
 def web_plot():
     APP = flask.Flask(__name__)
@@ -343,67 +282,38 @@ def web_plot():
 
 
 while True:
-	'''
-	os.system('clear')
-	print ("\n")
-	print ("\n")
-	print colored("\t---------------------------------Choose Process----------------------------------")
-	print colored ("\t What do you want to see", 'magenta')
-	print colored ("\t 1. Consolidated analysis on annual basis ", 'magenta')
-	print colored ("\t 2. Analysis of a particular currency in a specified time range ",'magenta')
-	print colored ("\t 3. Change Percentage for selected year", 'magenta')
-	print colored ("\t 4. Quit", 'magenta')
-	op1 = "Consolidated analysis on annual basis" 
-	op3 = "Change Percentage for selected year"
-	
-	while True:
-        	try:
-			user_in = int(raw_input(" \t Please enter 1, 2, 3 or 4: "))
-			if user_in > 0 and user_in < 5:
-				break
-			else:
-				raise ValueError
-		except  ValueError:
-			print colored ("\n\t Error!! Please Enter an interger from 1 to 3 , Try again", 'red', attrs= ['bold','dark'])
-	'''
 
-#	---------------------------------Choose Process----------------------------------")
 	op1 = "Consolidated analysis on annual basis" 
 	op3 = "Change Percentage for selected year"
 	
 	msg = "What do you want to see"
 	title = "Choose option"
-	choice = ["Consolidated analysis on annual basis ", "Analysis of a particular currency in a specified time range ", "Change Percentage for selected year","Exit"]
+	choice = ["Consolidated analysis  of all the currencies on annual basis", "Analysis of a particular currency in a specified time range", "Change in value of currency(percentage) for selected year","Exit"]
 	user_in = eg.choicebox(msg,title,choice)
-	print user_in
 	user_in = str (user_in)
-	print user_in
 	
-	if user_in == "Analysis of a particular currency in a specified time range ": 
+	if user_in == "Analysis of a particular currency in a specified time range": 
 		file1,myData,plot_data,chosen_curr,end_date,start_date = currency_select()
-		start1,end1,in1,in2 = date_select(myData,chosen_curr,end_date,start_date)
-		output(start1,end1,file1,plot_data,in1,in2,chosen_curr)
-	elif user_in == "Consolidated analysis on annual basis " :
-		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select(op1)
-		plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
-	elif user_in == "Change Percentage for selected year":
-		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year = annual_select(op3)
-		plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
+		start1,end1,in1,in2,flag = date_select(myData,chosen_curr,end_date,start_date)
+		if flag == 1:
+			pass
+		else:
+			output(start1,end1,file1,plot_data,in1,in2,chosen_curr)
+	elif user_in == "Change in value of currency(percentage) for selected year":
+		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year,flag = annual_select(op3)
+		if flag == 1:
+			pass
+		else:
+			plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
+	elif user_in == "Consolidated analysis  of all the currencies on annual basis":
+		plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year,flag = annual_select(op1)
+		if flag == 1:
+			pass
+		else:
+			plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
+	
+	elif user_in == "Exit":
+		exit(0)
 	else:
 		exit(0)
-	'''
-	elif user_in == 4:
-		exit(1)  
-	else:
-	    APP = flask.Flask(__name__)
-	    @APP.route('/')
-	    def index():
-	        return flask.render_template('index.html')
-	    APP.debug=True
-	    APP.run()
-	    url='http://127.0.0.1:5000/'
-	    webbrowser.open_new(url)
-	    shutdown_server()
-	    exit(0)
-	'''
 

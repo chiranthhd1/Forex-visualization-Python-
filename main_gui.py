@@ -19,8 +19,12 @@ def currency_select():
 	msg = "Please select any currency from above:"
 	choice = ["USD to INR","USD to GBP","USD to CAN","USD to EUR","USD to AUD","USD to CNY"]
 	inputfile = eg.choicebox(msg,title,choice)
+	if inputfile == None:
+		flag = 1
+		return (0,0,0,0,0,0,flag)
+	
 	inputfile = str(inputfile)		
-
+	flag = 0
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 	for keys in file_dict.keys():
 		if inputfile == keys:
@@ -33,7 +37,7 @@ def currency_select():
 	chosen_curr = Currencies_dict[s]
 	end_date = file1["Date"].iloc[-1]
 	start_date = file1["Date"].iloc[0]
-	return (file1,myData,plot_data,chosen_curr,end_date,start_date)
+	return (file1,myData,plot_data,chosen_curr,end_date,start_date,flag)
 
 
 def date_select(myData,chosen_curr,end_date,start_date):
@@ -302,8 +306,11 @@ while True:
 	user_in = str (user_in)
 	
 	if user_in == "Analysis of a particular currency in a specified time range": 
-		file1,myData,plot_data,chosen_curr,end_date,start_date = currency_select()
-		start1,end1,in1,in2,flag = date_select(myData,chosen_curr,end_date,start_date)
+		file1,myData,plot_data,chosen_curr,end_date,start_date,flag = currency_select()
+		if flag ==1:
+			pass
+		else:
+			start1,end1,in1,in2,flag = date_select(myData,chosen_curr,end_date,start_date)
 		print flag
 		if flag == 1:
 			pass

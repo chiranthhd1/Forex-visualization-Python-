@@ -77,6 +77,7 @@ def date_select(myData,chosen_curr,end_date,start_date):
 		else:
 			pass
 		temp+=1
+		print in1,in2
 	if start == 0 and end == 0: 
 		print colored ("\n Market was closed on these dates. Please try with different dates\n", 'red' , attrs = ['bold'])
 		exit(1)

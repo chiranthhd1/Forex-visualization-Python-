@@ -117,12 +117,12 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 	print colored ("\t----------------------------------Output--------------------------------------",'blue')
 	print("\n\tThe maximum Price is \t\t %s    on \t %s" %(maxprice,de['Date']))
 
-	x=value.iloc[0,1]
-	y=value.iloc[-1,1]
+	x = value.iloc[0,1]
+	y = value.iloc[-1,1]
 	z = ((x-y)/x * 100)
-	
+	'''
 	if z > 0:
-		print ("\n\tThe percentage change from \t%s  to \t %s  is   %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],z))
+		gui1.write("The percentage change from %s  to  %s  is   %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],z))
 	else:
 		print colored ("\n\tThe percentage change from \t%s  to \t %s  is   %.2f percent ",'red') %(value.iloc[0,0], value.iloc[-1,0],z)
 		
@@ -146,8 +146,42 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 	index = value.iloc[:, 4].values.argmax()
 	de = value.iloc[index]
 	print("\n\tThe maximum Low Price was \t %s     on \t %s" %(maxprice,de['Date']))
+	'''
+	v1 = str (value.iloc[0,0])
+	v2 = str(value.iloc[-1,0])
+	print v1,v2
+	a = ("The percentage change from %s  to  %s  is %.2f percent " %(value.iloc[0,0], value.iloc[-1,0],z))
+#	a = ("The percentage change from"+  v1 +" to " + v2 + " is " + z
+	print a	
+	#eg.msgbox(a)
+	minprice = value.iloc[:, 1].values.min()
+	index = value.iloc[:, 1].values.argmin()
+	de = value.iloc[index]
+	#b = ("The minimum Price was " + minprice +" on " + de['Date'])
+	b = ("\nThe minimum Price was                 %s  on %s" %(minprice,de['Date']))
 
-	wait_cofirm = raw_input("\n\tPlease press enter to view the graph")	
+	maxprice = value.iloc[:, 2].values.max()
+	index = value.iloc[:, 2].values.argmax()
+	de = value.iloc[index]
+	#c = ("The maximum opening Price was" + maxprice + " on " + de['Date'])
+	c = ("\nThe maximum opening Price was    %s  on %s" %(maxprice,de['Date']))
+	
+	maxprice = value.iloc[:, 3].values.max()
+	index = value.iloc[:, 3].values.argmax()
+	de = value.iloc[index]
+	#d = ("The maximum High Price was" + maxprice +" on " + de['Date'])
+	d = ("\nThe maximum High Price was          %s  on %s" %(maxprice,de['Date']))
+	
+	maxprice = value.iloc[:, 4].values.max()
+	index = value.iloc[:, 4].values.argmax()
+	de = value.iloc[index]
+	#e = ("The maximum Low Price was" + maxprice + " on " + de['Date'])
+	e = ("\nThe maximum Low Price was            %s  on %s" %(maxprice,de['Date']))
+	
+
+	eg.msgbox(a+b+c+d+e)
+
+	eg.msgbox("Graph has been plotted, please access it in the webpage")	
 	#print plot_data
 	ts = plot_data['Price']
 	ts1 = ts[in1:in2]	
@@ -157,7 +191,7 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 	plt.title('Time Series graph ')
 	mng = plt.get_current_fig_manager()
 	mng.resize(*mng.window.maxsize())
-	plt.savefig("static/op2.png")
+	plt.savefig("static/op2.png")	
 	#plt.show()
 	#plt.close()
 
@@ -165,23 +199,30 @@ def output(start,end,file1,plot_data,in1,in2,chosen_curr):
 def annual_select(op):
 	os.system('clear')
 	print ("\n\n")
-	print colored ("\tSelected option is %r",'yellow') %(op)
+	#print ("\tSelected option is %r",'yellow') %(op)
+	
 	print colored ("\t----------------------------------Output--------------------------------------",'blue')
 	file_dict = {"1":'usdtoinr.csv', "2":"usdgbp.csv","3":'USDCAN.csv', "4":"usdeuro.csv","5":"usd_to_aud.csv","6":"usdtocny.csv"}
 
         #input_year = raw_input("\tEnter year to be analysed ")
         while True:
-        	try:
-                        input_year = raw_input("\tEnter year between (2002-2016):  ")
-                        int_year = int(input_year)
+        	try:	
+			title = ("Select Year")			
+			msg = (("Selected option is %r") %(op))
+                        fieldNames = ["Enter year between (2002-2016):"]
+			fieldValues = []
+			fieldValues = eg.multenterbox(msg,title,fieldNames)
+			                        
+			int_year = int(fieldValues[0])
                         if int_year > 2001 and int_year < 2017:
                                 break
                         else:
                                 raise ValueError
 
         	except  ValueError:
-                	print colored ("\n\tError!! Please Enter an interger from 2002 to 2016 , Try again",'red', attrs=['bold'])
-		
+                	a = ("\n\tError!! Please Enter an interger from 2002 to 2016 , Try again")
+			eg.msgbox(a)
+	input_year = fieldValues[0]
 	dateparse = lambda dates: pd.datetime.strptime(dates, '%m/%d/%Y')	
 
 	plot_data_usdinr = pd.read_csv(file_dict["1"],index_col='Date',date_parser=dateparse)
@@ -191,6 +232,7 @@ def annual_select(op):
 	plot_data_usdaud = pd.read_csv(file_dict["5"],index_col='Date',date_parser=dateparse)
 	plot_data_usdcny = pd.read_csv(file_dict["6"],index_col='Date',date_parser=dateparse)
 	
+	eg.msgbox("Graph has been plotted, please access it in the webpage")
 	return (plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year)
 
 def plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeur,plot_data_usdaud,plot_data_usdcny,input_year):
@@ -283,6 +325,7 @@ def plot_func_chng(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_
 	mng = plt.get_current_fig_manager()
 	mng.resize(*mng.window.maxsize())
 	plt.savefig("static/op3.png")
+	eg.msgbox("Graph has been plotted, please access it in the webpage")
 	#plt.show()
 	#plt.close()
 

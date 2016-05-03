@@ -204,24 +204,41 @@ def plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeu
 	f, axes = plt.subplots(6, 1)
 	axes[0].plot(ts1_inr, color = "r")
 	axes[0].set_ylabel('USD to INR')
+	axes[0].set_xticks([])
+
 
 	axes[1].plot(ts1_gbp, color = 'b')
 	axes[1].set_ylabel('USD to GBP')
+	axes[1].set_xticks([])
+
+
 
 	axes[2].plot(ts1_can,  color = 'maroon')
 	axes[2].set_ylabel('USD to CAN')
+	axes[2].set_xticks([])
+
+
 
 	axes[3].plot(ts1_eur,  color = 'g')
 	axes[3].set_ylabel('USD to EUR')
+	axes[3].set_xticks([])
+
+
 
 	axes[4].plot(ts1_aud,  color = 'k')
 	axes[4].set_ylabel('USD to AUD')
+	axes[4].set_xticks([])
 
-	axes[5].plot(ts1_cny, color = 'm')
+
+
+	axes[5].plot(ts1_cny,color = 'm') 
 	axes[5].set_ylabel('USD to CNY')
+	axes[5].set_xlabel(fontsize = 5)
+
 	mng = plt.get_current_fig_manager()
 	mng.resize(*mng.window.maxsize())
-	plt.xlabel('Time Elapsed')
+	iy = input_year,split().strip("")
+	plt.xlabel(input_year)
 	plt.savefig("static/op3.png")
 	eg.msgbox("Graph has been plotted, please access it in a browser using URL: 'http://127.0.0.1:5000/'")
 	

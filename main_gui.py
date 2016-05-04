@@ -233,11 +233,9 @@ def plot_func(plot_data_usdinr,plot_data_usdgbp,plot_data_usdcan,plot_data_usdeu
 
 	axes[5].plot(ts1_cny,color = 'm') 
 	axes[5].set_ylabel('USD to CNY')
-	axes[5].set_xlabel(fontsize = 5)
 
 	mng = plt.get_current_fig_manager()
 	mng.resize(*mng.window.maxsize())
-	iy = input_year,split().strip("")
 	plt.xlabel(input_year)
 	plt.savefig("static/op3.png")
 	eg.msgbox("Graph has been plotted, please access it in a browser using URL: 'http://127.0.0.1:5000/'")
